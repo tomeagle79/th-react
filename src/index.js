@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import './index.css';
 import './App.css';
+//import createClass from 'create-react-class';
+var createReactClass = require('create-react-class');
 
 // VARS ************************************************** //
 
@@ -26,6 +28,10 @@ var PLAYERS = [
   {
     name: "Nim",
     score: 31
+  },
+  {
+    name: "Jeff",
+    score: 5
   },
 
 ]
@@ -56,7 +62,7 @@ function Player(props){
         {props.name}
       </div>
       <div className="player-score">
-        <Counter score={props.score}/>
+        <Counter />
       </div>
     </div>
   )
@@ -69,23 +75,35 @@ Player.propTypes = {
 
 // Counter ************************************************** //
 
-function Counter(props){
-  return(
-    <div className="counter">
-      <button className="counter-action decrement" > - </button>
-      <div className="counter-score"> {props.score} </div>
-      <button className="counter-action increment" > + </button>
-    </div>
-  )
-}
-
-Counter.propTypes = {
-  score: PropTypes.number.isRequired
-}
-
-// for (var i=0; i<players.length; i++){
-// console.log(players[i].name);
-// }
+let Counter = createReactClass({
+  propTypes: {
+    score: {}
+  },
+  getInitialState: function(){
+    return {
+      score: 0,
+    }
+  },
+  decrementScore: function(e){
+    this.setState({
+      score: (this.state.score - 1),
+    })
+  },
+  incrementScore: function(e){
+    this.setState({
+      score: (this.state.score + 1),
+    })
+  },
+  render: function(){
+    return(
+      <div className="counter">
+        <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
+        <div className="counter-score"> {this.state.score} </div>
+        <button className="counter-action increment" onClick={this.incrementScore}> + </button>
+      </div>
+    )
+  }
+});
 
 // App ************************************************** //
 
